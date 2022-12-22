@@ -131,7 +131,7 @@ reset:
 	 * set the cpu to SVC32 mode
 	 */
 	mrs	r0, cpsr
-	bic	r0, r0, #0x3f
+	bic	r0, r0, #0x1f
 	orr	r0, r0, #0xd3
 	msr	cpsr, r0
 
@@ -171,25 +171,8 @@ cpu_init_crit:
 	orr	r0, r0, #0x00000002	@ set bit 2 (A) Align
 	orr	r0, r0, #0x00001000	@ set bit 12 (I) I-Cache
 	/* Prepare to disable the MMU */
-	adr	r1, mmu_disable_phys
-	/* We presume we're within the first 1024 bytes */
-	and	r1, r1, #0x3fc
-	ldr	r2, _TEXT_PHY_BASE
-	ldr	r3, =0xfff00000
-	and	r2, r2, r3
-	orr	r2, r2, r1
-	b	mmu_disable
-
-	.align 5
-	/* Run in a single cache-line */
-mmu_disable:
 	mcr	p15, 0, r0, c1, c0, 0
-	nop
-	nop
-	mov	pc, r2
 #endif
-
-mmu_disable_phys:
 	/* Peri port setup */
 	ldr	r0, =0x70000000
 	orr	r0, r0, #0x13
