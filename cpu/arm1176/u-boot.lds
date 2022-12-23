@@ -32,7 +32,6 @@ SECTIONS
 	.text :
 	{
 		cpu/arm1176/start.o	(.text)
-		board/samsung/smdk6410/lowlevel_init.o (.text)
 		*(.text)
 	}
 
